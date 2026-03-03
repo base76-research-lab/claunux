@@ -2,10 +2,12 @@
   import ChatView from './ChatView.svelte';
   import WebView from './WebView.svelte';
   import LoginView from './LoginView.svelte';
+  import McpView from './McpView.svelte';
   import logo from './claunux.png';
 
   // Persist mode across restarts
   let mode = localStorage.getItem('claunux_mode') || null;
+  let activeTab = 'chat'; // chat | mcp
 
   function selectMode(selected) {
     mode = selected;
@@ -146,18 +148,20 @@
     <div class="logo">
       <img src={logo} alt="Claunux" />
     </div>
-    <div class="nav-icon active" title="Chat">💬</div>
+    <div class="nav-icon" class:active={activeTab === 'chat'} title="Chat" on:click={() => activeTab = 'chat'} role="button" tabindex="0" on:keydown={e => e.key === 'Enter' && (activeTab = 'chat')}>💬</div>
     <div class="nav-icon" title="Filer">📁</div>
-    <div class="nav-icon" title="MCP">🔌</div>
+    <div class="nav-icon" class:active={activeTab === 'mcp'} title="MCP Servers" on:click={() => activeTab = 'mcp'} role="button" tabindex="0" on:keydown={e => e.key === 'Enter' && (activeTab = 'mcp')}>🔌</div>
     <div class="spacer"></div>
-    <div class="nav-icon" title="Byt inloggning" on:click={resetMode}>⚙️</div>
+    <div class="nav-icon" title="Byt inloggning" on:click={resetMode} role="button" tabindex="0" on:keydown={e => e.key === 'Enter' && resetMode()}>⚙️</div>
   </aside>
 
   <!-- Main content -->
   <div class="main">
     <div class="titlebar"><span>Claunux</span></div>
     <div class="chat-wrap">
-      {#if mode === 'webview'}
+      {#if activeTab === 'mcp'}
+        <McpView />
+      {:else if mode === 'webview'}
         <WebView />
       {:else}
         <ChatView />
