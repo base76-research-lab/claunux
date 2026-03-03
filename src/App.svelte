@@ -1,6 +1,21 @@
 <script>
   import ChatView from './ChatView.svelte';
+  import WebView from './WebView.svelte';
+  import LoginView from './LoginView.svelte';
   import logo from './claunux.png';
+
+  // Persist mode across restarts
+  let mode = localStorage.getItem('claunux_mode') || null;
+
+  function selectMode(selected) {
+    mode = selected;
+    localStorage.setItem('claunux_mode', selected);
+  }
+
+  function resetMode() {
+    mode = null;
+    localStorage.removeItem('claunux_mode');
+  }
 </script>
 
 <style>
@@ -122,6 +137,9 @@
   }
 </style>
 
+{#if !mode}
+  <LoginView onSelect={selectMode} />
+{:else}
 <div class="shell">
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -132,15 +150,22 @@
     <div class="nav-icon" title="Filer">📁</div>
     <div class="nav-icon" title="MCP">🔌</div>
     <div class="spacer"></div>
-    <div class="nav-icon" title="Inställningar">⚙️</div>
+    <div class="nav-icon" title="Byt inloggning" on:click={resetMode}>⚙️</div>
   </aside>
 
-  <!-- Chat -->
+  <!-- Main content -->
   <div class="main">
     <div class="titlebar"><span>Claunux</span></div>
     <div class="chat-wrap">
-      <ChatView />
+      {#if mode === 'webview'}
+        <WebView />
+      {:else}
+        <ChatView />
+      {/if}
     </div>
-    <footer>Produced by Base76 Research Lab</footer>
+    {#if mode === 'api'}
+      <footer>Produced by Base76 Research Lab</footer>
+    {/if}
   </div>
 </div>
+{/if}
