@@ -85,7 +85,7 @@ cargo tauri dev
 - [ ] MCP server configuration panel
 - [ ] File/folder drag-and-drop into context
 - [ ] System tray + keyboard shortcut
-- [ ] Login via claude.ai WebView (Mode B)
+- [x] Login via claude.ai WebView (Mode B)
 - [ ] Offline fallback to Ollama
 
 ---
