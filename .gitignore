@@ -3,3 +3,4 @@ dist/
 src-tauri/target/
 .env
 Claunux-0.1.0-x86_64.AppImage
+REVIEW.md
